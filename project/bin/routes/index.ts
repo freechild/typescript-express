@@ -24,7 +24,7 @@ export class IndexRoute extends BaseRoute {
     router.get("/", (req: Request, res: Response, next: NextFunction) => {
       new IndexRoute().index(req, res, next);
     });
-    router.get("/test", (req: Request, res: Response, next: NextFunction) => {
+    router.get(["/test","/test/:subject"], (req: Request, res: Response, next: NextFunction) => {
       new IndexRoute().test(req, res, next);
     });
   }

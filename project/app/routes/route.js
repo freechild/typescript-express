@@ -5,14 +5,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *
  * @class BaseRoute
  */
-class BaseRoute {
+var BaseRoute = /** @class */ (function () {
     /**
      * Constructor
      *
      * @class BaseRoute
      * @constructor
      */
-    constructor() {
+    function BaseRoute() {
         //initialize variables
         this.title = "Tour of Heros";
         this.scripts = [];
@@ -25,10 +25,10 @@ class BaseRoute {
      * @param src {string} The src to the external JS file.
      * @return {BaseRoute} Self for chaining
      */
-    addScript(src) {
+    BaseRoute.prototype.addScript = function (src) {
         this.scripts.push(src);
         return this;
-    }
+    };
     /**
      * Render a page.
      *
@@ -40,7 +40,7 @@ class BaseRoute {
      * @param options {Object} Additional options to append to the view's local scope.
      * @return void
      */
-    render(req, res, view, options) {
+    BaseRoute.prototype.render = function (req, res, view, options) {
         //add constants
         res.locals.BASE_URL = "/";
         //add scripts
@@ -49,6 +49,7 @@ class BaseRoute {
         res.locals.title = this.title;
         //render view
         res.render(view, options);
-    }
-}
+    };
+    return BaseRoute;
+}());
 exports.BaseRoute = BaseRoute;

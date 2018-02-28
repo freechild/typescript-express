@@ -5,7 +5,7 @@ import * as path from 'path'
 import logger  =  require('morgan');
 import errorHandler = require("errorhandler");
 import methodOverride = require("method-override");
-import { IndexRoute } from "../app/routes/index.js"
+import { IndexRoute } from "../routes/index.js"
 
 export default class Server{
     public app: express.Application;
@@ -26,18 +26,6 @@ export default class Server{
 
         //add api
         this.api();
-
-        // this.app.set('view engine', 'html');
-        // this.app.engine('html', require('pug').renderFile);
-
-        // this.app.use(express.static(path.join(__dirname, 'dist')));
-        // // this.app.set('views', path.join(__dirname, 'app','views'));
-        // this.app.get("/", (req: express.Request,res: express.Response, next: express.NextFunction) => {
-        //     res.render("../index.html");
-        // });
-        // this.app.get("/test", (req: express.Request,res: express.Response, next: express.NextFunction) => {
-        //     res.send("hello world??");
-        // });
     }
 
     /**
@@ -58,11 +46,10 @@ export default class Server{
      */
     public config() {
         //add static paths
-        console.log(__dirname)
-        this.app.use(express.static(path.join(__dirname, "dist")));
-
+        this.app.use(express.static('dist'));
+        // console.log('path = ' + path.resolve(__dirname, "dist"))
         //configure pug
-        // this.app.set("views", path.join(__dirname, "views"));
+        // this.app.set("views", path.join(__dirname, "views"));        
         this.app.set("view engine", "pug");
 
         //use logger middlware

@@ -10,18 +10,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const bodyParser = __importStar(require("body-parser"));
-const path = __importStar(require("path"));
-const logger = require("morgan");
-const errorHandler = require("errorhandler");
-const methodOverride = require("method-override");
-const index_js_1 = require("../app/routes/index.js");
-class Server {
-    static bootstrap() {
-        return new Server();
-    }
-    constructor() {
+var express_1 = __importDefault(require("express"));
+var bodyParser = __importStar(require("body-parser"));
+var logger = require("morgan");
+var errorHandler = require("errorhandler");
+var methodOverride = require("method-override");
+var index_js_1 = require("../routes/index.js");
+var Server = /** @class */ (function () {
+    function Server() {
         //create expressjs application
         this.app = express_1.default();
         //configure application
@@ -30,38 +26,31 @@ class Server {
         this.routes();
         //add api
         this.api();
-        // this.app.set('view engine', 'html');
-        // this.app.engine('html', require('pug').renderFile);
-        // this.app.use(express.static(path.join(__dirname, 'dist')));
-        // // this.app.set('views', path.join(__dirname, 'app','views'));
-        // this.app.get("/", (req: express.Request,res: express.Response, next: express.NextFunction) => {
-        //     res.render("../index.html");
-        // });
-        // this.app.get("/test", (req: express.Request,res: express.Response, next: express.NextFunction) => {
-        //     res.send("hello world??");
-        // });
     }
+    Server.bootstrap = function () {
+        return new Server();
+    };
     /**
      * Create REST API routes
      *
      * @class Server
      * @method api
      */
-    api() {
+    Server.prototype.api = function () {
         //empty for now
-    }
+    };
     /**
      * Configure application
      *
      * @class Server
      * @method config
      */
-    config() {
+    Server.prototype.config = function () {
         //add static paths
-        console.log(__dirname);
-        this.app.use(express_1.default.static(path.join(__dirname, "dist")));
+        this.app.use(express_1.default.static('dist'));
+        // console.log('path = ' + path.resolve(__dirname, "dist"))
         //configure pug
-        // this.app.set("views", path.join(__dirname, "views"));
+        // this.app.set("views", path.join(__dirname, "views"));        
         this.app.set("view engine", "pug");
         //use logger middlware
         this.app.use(logger('dev'));
@@ -80,20 +69,21 @@ class Server {
         });
         //error handling
         this.app.use(errorHandler());
-    }
+    };
     /**
      * Create router
      *
      * @class Server
      * @method api
      */
-    routes() {
-        let router;
+    Server.prototype.routes = function () {
+        var router;
         router = express_1.default.Router();
         index_js_1.IndexRoute.create(router);
         this.app.use(router);
         //empty for now
-    }
-}
+    };
+    return Server;
+}());
 exports.default = Server;
 // export default Server;

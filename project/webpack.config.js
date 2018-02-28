@@ -1,12 +1,13 @@
 module.exports = {
+    watch: true,
     entry: {
         // "./src/index.tsx"
         vendor: ['babel-polyfill','react', 'react-dom'],
-        app: ["./src/index.tsx"],
+        app: ["./src/content_1/index.tsx"],
     },
     output: {
         filename: '[name].bundle.js',
-        path: __dirname + "/dist"
+        path: __dirname + "/dist/content_1"
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -23,7 +24,27 @@ module.exports = {
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+            {
+                test: /\.(jpg|jpeg|gif|png|svg|woff|woff2|eot)$/,
+                use: {
+                  loader: 'url-loader?limit=100000&name=./[name]/[hash].[ext]',
+                  options: { publicPath:'../', },
+                },
+            },
+            {
+                test: /\.scss$/,
+                use: ['style-loader', 'css-loader','sass-loader']
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader','css-loader']
+            },
+            {
+                test:/\.pug$/,
+                use:"pug-html-loader"
+            },            
+
         ]
     },
 

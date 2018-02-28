@@ -1,51 +1,51 @@
-var gulp = require('gulp')
-var gutil = require('gulp-util')
-var ts = require('gulp-typescript')
-var tsProject = ts.createProject("tsconfig.json")
-
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const clean = require('gulp-clean');
+const ts = require('gulp-typescript');
+const tsProject = ts.createProject("tsconfig.json");
+const tslint = require("gulp-tslint");
 
 const DIR = {
     SRC: 'src',
     BIN: 'bin',
-    CONFIG: 'config',
-    DEST: 'dist',
-    App_DEST: 'app',
-    APP_SRC: 'app_src',
+    APP: 'app',
+
 }
 
 const SRC = {
-    SERVER: DIR.BIN+"/*.ts",
-    APP: DIR.APP_SRC +"/**/*.ts",
+    SERVER: DIR.BIN+"/**/*.ts",
 }
 
 const DEST = {
-    SERVER: DIR.CONFIG + "/",
-    APP: DIR.App_DEST + "/",
+    SERVER: DIR.APP + "/",
 }
 
 //default
-gulp.task('default',['app','watch'],()=>{    
+gulp.task('default',['clean','lint','build','watch'],()=>{    
     gutil.log('gulp is running')
 });
 
 
 //server compile
-gulp.task('server',()=>{
+gulp.task('lint',()=>{    
     return gulp.src( SRC.SERVER )
-        .pipe(tsProject())
-        .js.pipe(gulp.dest( DEST.SERVER ));
+        .pipe( tslint.report({
+            summarizeFailureOutput: true
+        }))        
 })
 
 //app compile
-gulp.task('app',()=>{
-    return gulp.src( SRC.APP )
+gulp.task('build', ()=>{
+    return gulp.src( SRC.SERVER )
         .pipe(tsProject())
-        .js.pipe(gulp.dest( DEST.APP ));
+        .js.pipe(gulp.dest(DEST.SERVER))
 })
+
+
 
 //server old file clean
 gulp.task('clean', ()=>{
-    return gulp.src(DIR.CONFIG +"/*" ,{
+    return gulp.src(DEST.SERVER +"*" ,{
         read:false
     })
     .pipe(clean());
@@ -58,6 +58,6 @@ gulp.task('watch', () => {
     let watcher = {
         
         // server: gulp.watch(SRC.SERVER,['server']),
-        app: gulp.watch(SRC.APP,['app']),
+        build: gulp.watch(SRC.SERVER,['lint','build']),
     }
 })
